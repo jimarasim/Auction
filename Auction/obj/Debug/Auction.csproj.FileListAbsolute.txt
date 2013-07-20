@@ -1,0 +1,11 @@
+C:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\bin\Auction.dll
+C:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\bin\Auction.pdb
+C:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\obj\Debug\ResolveAssemblyReference.cache
+C:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\obj\Debug\Auction.dll
+C:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\obj\Debug\Auction.pdb
+D:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\bin\Auction.dll
+D:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\bin\Auction.pdb
+D:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\obj\Debug\ResolveAssemblyReference.cache
+D:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\obj\Debug\Auction.dll
+D:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\obj\Debug\Auction.pdb
+D:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction\bin\SanitizerProviders.dll

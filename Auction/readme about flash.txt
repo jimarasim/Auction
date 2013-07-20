@@ -1,0 +1,1 @@
+MinimaFlatCustomColorPlayBackSeekCounterVolMute.swf is required by auctionVideo.swf to get the video controls

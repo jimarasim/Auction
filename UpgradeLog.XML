@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Auction">
+</Property><Property Name="Solution File" Value="D:\static\jaemzware\VS2008 PROJECTS\websites\Auction\Auction.sln">
+</Property><Property Name="Date" Value="Thursday, May 05, 2011">
+</Property><Property Name="Time" Value="22:36 PM">
+</Property></Properties><Event ErrorLevel="0" Project="Auction" Source="Auction\Auction.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Auction" Source="Auction\Auction.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Auction.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Auction.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Auction" Source="Auction\Auction.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

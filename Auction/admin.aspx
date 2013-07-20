@@ -1,0 +1,278 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="admin.aspx.cs" Inherits="Auction._Default" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>Site Administration</title>
+    <link rel="Stylesheet" href="auction.css"/>
+    <script type="text/javascript" src="scripts/jquery-1.9.1.js"></script>
+</head>
+<body>        
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                //hide the title input box
+                $("#titleinput").hide();
+
+                //hide the save link, and specify function to perform when clicked
+                $("#titlesave").hide()
+                .click(function () {
+
+                    //load is an ajax call that loads the element specified with the returned html
+                    $("#usertitle").load("settitle.aspx", { title: $("#titleinput").attr("value") });
+                    showNonEdit();
+                });
+
+                //hide the cancel link, and specify function to perform when clicked.
+                $("#titlecancel").hide()
+                .click(function () {
+                    showNonEdit();
+                });
+
+                //specify what to do when "Title" is clicked
+                $("#edittitle").click(function () {
+
+                    //hide the title label
+                    $("#usertitle").hide();
+
+                    //set the text of the title text box to the current title label
+                    $("#titleinput").attr("value", $("#usertitle").text());
+
+                    //show the title text box
+                    $("#titleinput").show();
+
+                    //show the save and cancel buttons
+                    $("#titlesave").show();
+                    $("#titlecancel").show();
+
+                });
+
+            });
+
+            function showNonEdit() {
+                    $("#titlecancel").hide();
+                    $("#titlesave").hide();
+                    $("#titleinput").hide();
+                    $("#usertitle").show();
+            }
+        </script>
+
+        <form id="form1" runat="server" defaultfocus="Password"> 
+        <%if (Session["UID"] == null || Convert.ToInt32(Session["UID"]) == 0){%>
+            <div class="formsection">
+            <span class="formsectiontitle">Unauthorized</span>
+            </div>
+        <%}else{%>
+            <table>
+            <tr><td>USER:</td><td><b><%=Session["USERNAME"] %></b></td></tr>
+            <tr><td>UID:</td><td><b><%=Session["UID"] %></b></td></tr>
+            <tr><td><a id="edittitle" href="#">TITLE:</a></td>
+            <td>
+            <b><span id="usertitle"><%=Session["TITLE"] %></span></b>
+            <input type="text" id="titleinput" />
+            <a href="#" id="titlesave">save</a>
+            <a href="#" id="titlecancel">cancel</a>
+            </td>
+            </tr> 
+            </table>     
+            
+
+                <h3>Upload</h3>
+                <div id="divUpload">
+                    <div class="formsection">
+                        Number of Files:
+                        <asp:DropDownList ID="NumberOfFilesDropDown" runat="server" AutoPostBack="True">
+                        <asp:ListItem Text="2" Value="2"></asp:ListItem>
+                        <asp:ListItem Text="4" Value="4"></asp:ListItem>
+                        <asp:ListItem Text="6" Value="6"></asp:ListItem>
+                        <asp:ListItem Text="8" Value="8"></asp:ListItem>
+                        <asp:ListItem Text="10" Value="10"></asp:ListItem>
+                        </asp:DropDownList>
+                        <asp:PlaceHolder ID="FileUploadPlaceHolder" runat="server"></asp:PlaceHolder>
+                        <asp:Button ID="UploadButton" runat="server" Text="Upload (MAX 50MB)" 
+                            onclick="UploadButton_Click" />
+                        <span>Recognized formats:.mov, .flv, .f4v, .mp4, .mp3, .png, .gif, and .jpg </span>
+                        <br />
+                        <asp:Label ID="InvalidFilesLabel" runat="server" Text=""></asp:Label>
+                    </div>
+                </div> <!--divUpload-->
+                <asp:ScriptManager ID="ScriptManager1" runat="server">
+                </asp:ScriptManager>
+                <asp:UpdateProgress ID="GlobalUpdateProgress" runat="server" DisplayAfter="250">
+                    <ProgressTemplate>
+                    <div class="progressDiv"><img alt="progress" src="progress.gif" /></div>
+                    </ProgressTemplate>
+                </asp:UpdateProgress>   
+                <h3>Library</h3>
+                <div id="divLibrary">    
+                <asp:UpdatePanel ID="ItemsUpdatePanel" runat="server">
+                <ContentTemplate>   
+                    <div class="formsection">
+                    <table>
+                    <tr><td>
+                        <asp:Label ID="errormessage" runat="server" Text="Label"></asp:Label>
+                    </td></tr>
+                    <tr><td>
+                            <asp:DropDownList 
+                            ID="itemdropdownabovegrid" 
+                            runat="server" 
+                            DataSourceID="itemdropdownDataSource" 
+                            DataTextField="Item" 
+                            DataValueField="Item" 
+                            OnSelectedIndexChanged="itemdropdownabovegrid_SelectedIndexChanged"
+                            OnDataBound="itemdropdownabovegrid_DataBound"
+                            OnDataBinding="itemdropdownabovegrid_DataBinding"
+                            AutoPostBack="True"></asp:DropDownList>
+                    </td></tr>
+                    <tr>
+                        <td>            
+                            <asp:GridView 
+                            ID="GridView1" 
+                            runat="server" 
+                            DataSourceID="GridView1DataSource"                     
+                            EmptyDataText="" 
+                            HeaderStyle-BackColor="#000066" 
+                            HeaderStyle-ForeColor="#FFFF66" 
+                            AllowSorting="True" 
+                            AllowPaging="True" 
+                            PageSize="5" 
+                            DataKeyNames="ID" 
+                            SelectedRowStyle-BackColor="DarkOliveGreen"
+                            EditRowStyle-BackColor="DarkRed"
+                            AutoGenerateColumns="False"  
+                            OnRowDeleting="GridView1_RowDeleting"
+                            OnRowDeleted="GridView1_RowDeleted"
+                            OnRowUpdated="GridView1_RowUpdated"
+                             EditRowStyle-CssClass="rowstyle" RowStyle-CssClass="rowstyle">
+                                <Columns>
+                                    <asp:commandfield ShowEditButton="true" ButtonType="Button"
+                                        headertext="EDIT"/>
+                                    <asp:commandfield ShowDeleteButton="true" ButtonType="Button"
+                                        headertext="DELETE"/>
+
+                                    <asp:TemplateField HeaderText="Files" SortExpression="ID">
+                                        <ItemTemplate>
+                                            <table>
+                                                <tr><td>ID</td><td>
+                                                    <asp:Label ID="idlabellabel" runat="server" Text='<%# Eval("ID") %>'></asp:Label></td></tr>
+                                                <tr><td>Item Group:</td><td>
+                                                    <asp:Label ID="itemlabel" runat="server" Text='<%# Eval("Item") %>'></asp:Label></td></tr>
+                                                <tr><td>File Title:</td><td>
+                                                    <asp:Label ID="titlelabel" runat="server" Text='<%# Eval("Title") %>'></asp:Label></td></tr>
+                                                <tr><td>Filename</td><td>
+                                                    <asp:Label ID="filenamelabel" runat="server" Text='<%# Eval("Filename") %>'></asp:Label></td></tr>
+                                                <tr><td>
+                                                    </td><td>                                        
+                                                    <%# DisplayFileTag((String)DataBinder.Eval(Container.DataItem,"Filename")) %>                                        
+                                                    </td></tr>                                    
+                                            </table>
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <table>
+                                                <tr><td>ID</td><td>
+                                                    <asp:Label ID="idlabel" runat="server"  Text='<%# Bind("ID") %>'></asp:Label></td></tr>
+                                                <tr><td>Item Group:</td><td>
+                                                    <asp:TextBox ID="itemtext" runat="server" Text='<%# Bind("Item") %>'></asp:TextBox>
+                                                    <asp:DropDownList 
+                                                    ID="itemdropdown" 
+                                                    runat="server" 
+                                                    DataSourceID="itemdropdownDataSource" 
+                                                    DataTextField="Item" 
+                                                    DataValueField="Item" 
+                                                    OnSelectedIndexChanged="itemdropdown_SelectedIndexChanged" 
+                                                    AutoPostBack="True"></asp:DropDownList>
+                                                </td></tr>
+                                                <tr><td>File Title:</td><td>
+                                                    <asp:TextBox ID="titletext" runat="server" Text='<%# Bind("Title") %>'></asp:TextBox></td></tr>
+                                                <tr><td>Filename</td><td>
+                                                    <asp:Label ID="filenamelabel" runat="server" Text='<%# Bind("Filename") %>'></asp:Label></td></tr>
+                                            </table>
+                                        </EditItemTemplate>
+                                    </asp:TemplateField>                     
+                                </Columns>
+                            </asp:GridView>
+                            <asp:SqlDataSource ID="GridView1DataSource" runat="server"></asp:SqlDataSource>
+                            <asp:SqlDataSource ID="itemdropdownDataSource" runat="server"></asp:SqlDataSource>
+                
+                        </td>
+                    </tr>
+                    </table>
+                    </div>
+                </ContentTemplate>
+                </asp:UpdatePanel>
+                </div> <!--divLibrary-->    
+
+                <%if (Convert.ToInt32(Session["UID"]) == 1){%>
+                <h3>Users</h3>
+                <div id="divUsers">  
+                <%}%>
+                <asp:UpdatePanel ID="UsersUpdatePanel" runat="server" Visible="false">
+                <ContentTemplate>        
+                    <div class="formsection">
+                    <table>
+                    <tr><td><asp:Label ID="usererrormessage" runat="server"></asp:Label></td></tr>
+                    <tr><td>
+                            <asp:GridView 
+                            ID="UsersGridView" 
+                            runat="server" 
+                            DataSourceID="UsersDataSource"                     
+                            EmptyDataText="" 
+                            HeaderStyle-BackColor="#000066" 
+                            HeaderStyle-ForeColor="#FFFF66" 
+                            AllowSorting="True" 
+                            AllowPaging="True" 
+                            PageSize="5" 
+                            DataKeyNames="ID" 
+                            OnRowDeleting="UsersGridView_RowDeleting"
+                            SelectedRowStyle-BackColor="DarkOliveGreen"
+                            EditRowStyle-BackColor="DarkRed"
+                            AutoGenerateColumns="False"  
+                             EditRowStyle-CssClass="rowstyle" 
+                             RowStyle-CssClass="rowstyle"
+                             ShowFooter="true">
+                                <Columns>
+                                    <asp:commandfield ShowEditButton="true" ShowDeleteButton="true" ButtonType="Button"
+                                        headertext="EDIT"/>
+                                    <asp:TemplateField HeaderText="ID" SortExpression="ID">
+                                        <ItemTemplate><asp:Label ID="useridlabel" runat="server" Text='<%# Eval("ID") %>'></asp:Label></ItemTemplate>
+                                        <EditItemTemplate><asp:Label ID="idlabel" runat="server"  Text='<%# Bind("ID") %>'></asp:Label></EditItemTemplate>
+                                        <FooterTemplate><asp:Button ID="adduserbutton" Text="Add" runat="server" OnClick="adduserbutton_click"></asp:Button></FooterTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="USER NAME" SortExpression="USERNAME">
+                                        <ItemTemplate><asp:HyperLink ID="usernamelink" runat="server" Target="_blank" NavigateUrl='<%# String.Format("~/default.aspx?username={0}",Eval("USERNAME")) %>' Text='<%# Eval("USERNAME") %>'></asp:HyperLink></ItemTemplate>
+                                        <EditItemTemplate><asp:TextBox ID="usernametext" runat="server" Text='<%# Bind("USERNAME") %>'></asp:TextBox></EditItemTemplate>
+                                        <FooterTemplate><asp:TextBox ID="addusernametext" runat="server"></asp:TextBox></FooterTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="PASSWORD" SortExpression="PASSWORD">
+                                        <ItemTemplate>********<!--<asp:Label ID="passwordlabel" runat="server" Text='<%# Eval("PASSWORD") %>'></asp:Label>--></ItemTemplate>
+                                        <EditItemTemplate><asp:TextBox ID="passwordtext" runat="server" Text='<%# Bind("PASSWORD") %>'></asp:TextBox></EditItemTemplate>
+                                        <FooterTemplate><asp:TextBox ID="addpasswordtext" runat="server"></asp:TextBox></FooterTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="TITLE" SortExpression="TITLE">
+                                        <ItemTemplate><asp:Label ID="usertitlelabel" runat="server" Text='<%# Eval("TITLE") %>'></asp:Label></ItemTemplate>
+                                        <EditItemTemplate><asp:TextBox ID="usertitletext" runat="server" Text='<%# Bind("TITLE") %>'></asp:TextBox></EditItemTemplate>
+                                        <FooterTemplate><asp:TextBox ID="addusertitletext" runat="server"></asp:TextBox></FooterTemplate>
+                                    </asp:TemplateField>                  
+                                </Columns>
+                            </asp:GridView>
+                    <asp:SqlDataSource ID="UsersDataSource" runat="server">
+                    <InsertParameters>
+                    <asp:Parameter Type="String" Name="USERNAME"></asp:Parameter>
+                    <asp:Parameter Type="String" Name="TITLE"></asp:Parameter>
+                    <asp:Parameter Type="String" Name="PASSWORD"></asp:Parameter>
+                    </InsertParameters>
+                    </asp:SqlDataSource>
+                    </td></tr>
+                    </table>
+                    </div>
+                </ContentTemplate>
+                </asp:UpdatePanel>
+                <%if (Convert.ToInt32(Session["UID"]) == 1){%>
+                </div> <!--divUsers-->  
+                <%}%>
+            
+        <%}%>
+        </form>
+</body>
+</html>
