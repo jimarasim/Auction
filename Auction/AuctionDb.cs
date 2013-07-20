@@ -18,7 +18,7 @@ namespace Auction
     public class AuctionDb
     {
         //location where app is running
-        private DbLocation sqlLocation = DbLocation.godaddy;
+        private DbLocation sqlLocation = DbLocation.local;
 
         //connection string for location where app is running
         private SqlConnectionStringBuilder sqlString = new SqlConnectionStringBuilder();
