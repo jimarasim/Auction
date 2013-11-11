@@ -20,7 +20,7 @@
                 .click(function () {
 
                     //load is an ajax call that loads the element specified with the returned html
-                    $("#usertitle").load("settitle.aspx", { title: $("#titleinput").attr("value") });
+                    $("#usertitle").load("settitle.aspx", { title: $("#titleinput").val()});
                     showNonEdit();
                 });
 

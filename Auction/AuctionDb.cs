@@ -18,7 +18,7 @@ namespace Auction
     public class AuctionDb
     {
         //location where app is running
-        private DbLocation sqlLocation = DbLocation.local;
+        private DbLocation sqlLocation = DbLocation.godaddy;
 
         //connection string for location where app is running
         private SqlConnectionStringBuilder sqlString = new SqlConnectionStringBuilder();
@@ -164,20 +164,29 @@ namespace Auction
             cxn.Close();
         }
 
-        public List<String> SelectAllUsers()
+        public List<Tuple<String,String>> SelectAllUsersAndTitles()
         {
-            SqlConnection cxn = ConnectToDatabase();
-            SqlCommand cmd = new SqlCommand("SELECT USERNAME FROM [" + sqlString.InitialCatalog + "].[dbo].[USERS] ORDER BY USERNAME", cxn);
-            SqlDataReader rdr = cmd.ExecuteReader();
+            //USERNAME, TITLE
+            List<Tuple<String, String>> listOfUsers = new List<Tuple<String, String>>();
 
-            List<String> listOfUsers = new List<String>();
-
-            while (rdr.Read())
+            try
             {
-                listOfUsers.Add(Convert.ToString(rdr[0]));
-            }
+                SqlConnection cxn = ConnectToDatabase();
+                SqlCommand cmd = new SqlCommand("SELECT USERNAME, TITLE FROM [" + sqlString.InitialCatalog + "].[dbo].[USERS]", cxn);
+                SqlDataReader rdr = cmd.ExecuteReader();
+                               
 
-            cxn.Close();
+                while (rdr.Read())
+                {
+                    listOfUsers.Add(new Tuple<String, String>(Convert.ToString(rdr[0]), Convert.ToString(rdr[1])));
+                }
+
+                cxn.Close();
+            }
+            catch (Exception ex)
+            {
+                listOfUsers.Add(new Tuple<String,String>("jaemz","EXCEPTION:"+ex.Message));
+            }
 
             return listOfUsers;
         }

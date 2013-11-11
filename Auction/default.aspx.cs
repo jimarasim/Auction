@@ -129,6 +129,7 @@ namespace Auction
                             Response.Write("<a class='filelink' href='images/" + filewithtitle.Item1 + "'>" + (filewithtitle.Item2 == "" ? "--Untitled--" : filewithtitle.Item2) + "</a>");
                             Response.Write("</td><td class='play'>");
                             
+                            /*
                             String strFlash;
                             strFlash = "<embed type=\"application/x-shockwave-flash\" ";
                             strFlash += "src=\"playSoundParameterWithProgress.swf?titleUrl=images/" + filewithtitle.Item1 + "\" ";
@@ -140,8 +141,9 @@ namespace Auction
                             strFlash += "bgcolor=\"#000000\">";
                             strFlash += "</embed>";
                             Response.Write(strFlash);
+                             */
                              
-                            //Response.Write("<audio controls><source src='images/"+filewithtitle.Item1+"' type='audio/mpeg'></audio>");
+                            Response.Write("<audio controls preload='none'><source src='images/"+filewithtitle.Item1+"' type='audio/mpeg'></audio>");
                             Response.Write("</td></tr>");
 
                         }

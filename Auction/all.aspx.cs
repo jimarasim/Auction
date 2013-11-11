@@ -18,11 +18,12 @@ namespace Auction
         {
             AuctionDb adb = new AuctionDb();
 
-            List<String> users = adb.SelectAllUsers();
+            //USER TITLE
+            List<Tuple<String,String>> users = adb.SelectAllUsersAndTitles();
 
-            foreach (String user in users)
+            foreach (Tuple<String,String> user in users)
             {
-                Response.Write("<a href='default.aspx?username="+user+"'>"+user+"</a><br/>");
+                Response.Write("<a href='default.aspx?username="+user.Item1+"'>"+user.Item2+"</a><br/>");
             }
         }
     }
